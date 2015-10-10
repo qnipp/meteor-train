@@ -1,7 +1,7 @@
 {
-  "name": "application-name",
-  "version": "1.0.0",
-  "description": "Application description.",
+  "name": "meteor-train",
+  "version": "0.1.0",
+  "description": "A toy train controlled by Meteor – as submitted to the Meteor Global Distributed Hackathon 2015.",
   "scripts": {
     "start": "meteor --settings settings-development.json",
     "staging": "meteor deploy staging.meteor.com --settings settings-development.json",
