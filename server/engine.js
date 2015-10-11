@@ -84,11 +84,10 @@ Meteor.startup(function() {
 
 				// switch the lights
 
-					wpi.digitalWrite(frontWhitePin, oneIf(newspeed > 0));
-					wpi.digitalWrite(frontRedPin, oneIf(newspeed <= 0));
-					wpi.digitalWrite(rearWhitePin, oneIf(newspeed < 0));
-					wpi.digitalWrite(rearRedPin, oneIf(newspeed >= 0));
-				}
+				wpi.digitalWrite(frontWhitePin, oneIf(newspeed > 0));
+				wpi.digitalWrite(frontRedPin, oneIf(newspeed <= 0));
+				wpi.digitalWrite(rearWhitePin, oneIf(newspeed < 0));
+				wpi.digitalWrite(rearRedPin, oneIf(newspeed >= 0));
 
 			} else {
 				console.log("Controlling train: speed = " + Math.abs(newspeed) + "  direction = " + (newspeed >= 0));
