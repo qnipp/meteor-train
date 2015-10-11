@@ -5,10 +5,20 @@ var speedRange = 50;
 var pwmPin = 1;
 var directionPin = 5;
 
+var frontWhitePin = 3;
+var frontRedPin = 7;
+var rearWhitePin = 4;
+var rearRedPin = 15;
+
+
 Meteor.startup(function() {
 
 	function sign(x) {
 		return x > 0 ? 1 : x == 0 ? 0 : -1;
+	}
+
+	function oneIf(x) {
+		return x ? 1 : 0;
 	}
 
 	try {
@@ -34,6 +44,17 @@ Meteor.startup(function() {
 		wpi.pinMode(directionPin, wpi.OUTPUT);
 		wpi.digitalWrite(directionPin, 1);
 
+		// Initialize light pins
+
+		wpi.pinMode(frontWhitePin, wpi.OUTPUT);
+		wpi.digitalWrite(frontWhitePin, 0);
+		wpi.pinMode(frontRedPin, wpi.OUTPUT);
+		wpi.digitalWrite(frontRedPin, 0);
+		wpi.pinMode(rearWhitePin, wpi.OUTPUT);
+		wpi.digitalWrite(rearWhitePin, 0);
+		wpi.pinMode(rearRedPin, wpi.OUTPUT);
+		wpi.digitalWrite(rearRedPin, 0);
+
 	}
 
 	// Initialize interval for speed updates
@@ -54,8 +75,26 @@ Meteor.startup(function() {
 			Train.update({}, {$set: {currentspeed: Math.abs(newspeed), currentdirection: sign(newspeed)}});
 
 			if (wpi) {
+
+				// control the engine
+
 				wpi.pwmWrite(pwmPin, Math.floor(Math.abs(newspeed)));
 				wpi.digitalWrite(directionPin, newspeed >= 0 ? 1 : 0);
+
+				// switch the lights
+
+				if (newspeed == 0) {
+					wpi.digitalWrite(frontWhitePin, oneIf(train.direction > 0));
+					wpi.digitalWrite(frontRedPin, oneIf(train.direction <= 0));
+					wpi.digitalWrite(rearWhitePin, oneIf(train.direction < 0));
+					wpi.digitalWrite(rearRedPin, oneIf(train.direction >= 0));
+				} else {
+					wpi.digitalWrite(frontWhitePin, oneIf(newspeed > 0));
+					wpi.digitalWrite(frontRedPin, oneIf(newspeed <= 0));
+					wpi.digitalWrite(rearWhitePin, oneIf(newspeed < 0));
+					wpi.digitalWrite(rearRedPin, oneIf(newspeed >= 0));
+				}
+
 			} else {
 				console.log("Controlling train: speed = " + Math.abs(newspeed) + "  direction = " + (newspeed >= 0));
 			}
