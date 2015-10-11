@@ -48,13 +48,13 @@ UserPresenceSettings({
 	onDisconnect: function(userPresence) {
 		
 		 // Do something with userPresence data on user disconnect
-		console.log('User: '+ userPresence._id + ' has disconnected.');
+		//console.log('User: '+ userPresence._id + ' has disconnected.');
 		
 		Train.update({ currentengineman: userPresence._id }, { $set: {currentengineman: "", targetspeed: 0}}, null, function(error, rowsaffected) {
 			/*if(rowsaffected === 1) {
 				Meteor.call("setTargetspeed", 0);
 			}*/
-			console.log('onDisconnect update message: '+ error + " - "+ rowsaffected);
+			//console.log('onDisconnect update message: '+ error + " - "+ rowsaffected);
 		});
 	}
 });

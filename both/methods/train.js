@@ -39,12 +39,14 @@ Meteor.methods({
 			throw new Meteor.Error("setEngine needs a current connection");
 		}
 		
+		console.log('setEngineman: '+ connection + " - "+ leaving);
+		
 		if(leaving === true) {
 			Train.update({ currentengineman: connection }, { $set: {currentengineman: "", targetspeed: 0}}, null, function(error, rowsaffected) {
 				if(rowsaffected !== 1) {
 					throw new Meteor.Error("only you can leave the drivers cab.");
 				}
-				//console.log('setEngineman update message: '+ error + " - "+ rowsaffected);
+				console.log('setEngineman update message: '+ error + " - "+ rowsaffected);
 			});
 		} else {
 			Train.update({ currentengineman: "" }, { $set: {currentengineman: connection }}, null, function(error, rowsaffected) {

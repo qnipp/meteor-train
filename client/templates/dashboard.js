@@ -17,12 +17,18 @@ Template.train.onRendered( function() {
 	//console.log('updating myconnection in rendered: '+ Meteor.connection._lastSessionId);
 	if(Meteor.connection._lastSessionId == null) {
 		var myconn = this.myconnection;
+		var timeoutMyconnection;
 		
-		Meteor.setTimeout(
-				function(){
-					console.log('updating myconnection in timeout: '+ Meteor.connection._lastSessionId);
+		console.log('myconnection is null in rendered: '+ Meteor.connection._lastSessionId + ' starting interval');
+		
+		timeoutMyconnection = Meteor.setInterval(
+			function(){
+				console.log('updating myconnection in interval: '+ Meteor.connection._lastSessionId);
+				if(Meteor.connection._lastSessionId != null) {
 					myconn.set(Meteor.connection._lastSessionId);
-				}, 2000);
+					Meteor.clearInterval(timeoutMyconnection);
+				}
+			}, 1000);
 	} else {
 		this.myconnection.set(Meteor.connection._lastSessionId);
 	}
