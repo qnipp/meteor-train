@@ -23,6 +23,7 @@ Meteor.startup(function() {
 
 	try {
 		var wpi = Meteor.npmRequire("wiring-pi");
+		wpi.setup("wpi");
 	} catch(e) {
 		wpi = null;
 	}
