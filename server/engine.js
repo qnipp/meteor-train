@@ -1,6 +1,6 @@
 var speedInterval = 50;
 var acceleration = .4;
-var speedRange = 50;
+var speedRange = 256;
 
 var pwmPin = 1;
 var directionPin = 5;
@@ -23,6 +23,7 @@ Meteor.startup(function() {
 
 	try {
 		var wpi = Meteor.npmRequire("wiring-pi");
+		wpi.setup("wpi");
 	} catch(e) {
 		wpi = null;
 	}
@@ -83,22 +84,22 @@ Meteor.startup(function() {
 
 				// switch the lights
 
-				if (newspeed == 0) {
-					wpi.digitalWrite(frontWhitePin, oneIf(train.direction > 0));
-					wpi.digitalWrite(frontRedPin, oneIf(train.direction <= 0));
-					wpi.digitalWrite(rearWhitePin, oneIf(train.direction < 0));
-					wpi.digitalWrite(rearRedPin, oneIf(train.direction >= 0));
-				} else {
-					wpi.digitalWrite(frontWhitePin, oneIf(newspeed > 0));
-					wpi.digitalWrite(frontRedPin, oneIf(newspeed <= 0));
-					wpi.digitalWrite(rearWhitePin, oneIf(newspeed < 0));
-					wpi.digitalWrite(rearRedPin, oneIf(newspeed >= 0));
-				}
+				wpi.digitalWrite(frontWhitePin, oneIf(newspeed > 0));
+				wpi.digitalWrite(frontRedPin, oneIf(newspeed <= 0));
+				wpi.digitalWrite(rearWhitePin, oneIf(newspeed < 0));
+				wpi.digitalWrite(rearRedPin, oneIf(newspeed >= 0));
 
 			} else {
 				console.log("Controlling train: speed = " + Math.abs(newspeed) + "  direction = " + (newspeed >= 0));
 			}
 
+		}
+
+		if (signedCurrentspeed == 0 && wpi) {
+			wpi.digitalWrite(frontWhitePin, oneIf(train.direction > 0));
+			wpi.digitalWrite(frontRedPin, oneIf(train.direction <= 0));
+			wpi.digitalWrite(rearWhitePin, oneIf(train.direction < 0));
+			wpi.digitalWrite(rearRedPin, oneIf(train.direction >= 0));
 		}
 
 	}, speedInterval);
