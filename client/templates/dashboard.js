@@ -1,4 +1,4 @@
-Template.dashboard.onCreated( () => {
+Template.dashboard.onCreated( function() {
   Template.instance().subscribe( 'train' );
 });
 
