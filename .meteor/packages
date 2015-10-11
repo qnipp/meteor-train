@@ -16,7 +16,6 @@ kadira:blaze-layout
 meteor-base
 session
 templating
-fourseven:scss
 reactive-var
 reactive-dict
 tracker
