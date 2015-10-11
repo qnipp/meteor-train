@@ -121,7 +121,7 @@
     display: block;
     position: absolute;
     width: 10px;
-    font-size:30px;
+    font-size:25px;
     text-align: center;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
@@ -210,4 +210,17 @@
     font-family: 'Open Sans', sans-serif;
 	font-size: 25px;
 	color: black;
+}
+
+@media only screen and (max-width: 400px) {
+	
+	.tachometer {
+		width:  220px;
+		height: 220px;
+	}
+	
+	[class^="num_"] {
+		font-size:23px;
+	}
+
 }

@@ -21,10 +21,10 @@
 
 	<div class="header-container">
 		<header class="wrapper clearfix">
-			<h1 class="title">qnipp - The Meteor Train</h1>
+			<h1 class="title">The Meteor Train</h1>
 			<nav>
 				<ul>
-					<li><a href="#">Logo</a></li>
+					<li><a href="#"><img src="qnipp_logo_white.png" class="logo" /></a></li>
 				</ul>
 			</nav>
 		</header>
@@ -63,17 +63,18 @@
 					</div>
 						
 				</section>
+				<!--
 				<footer>
-					<h3>passengers</h3>
-					<p>{{connections.count}}</p>
-					<!--
+					<h3>{{connections.count}} passenger(s)</h3>
+					
 					<ul>
 						{{#each connections}}
 							{{> connection}}
 						{{/each}}
 					</ul>
-					-->
+					
 				</footer>
+				-->
 			</article>
 
 			<aside>
@@ -83,6 +84,7 @@
 					{{> train_cab}}
 				{{/each}}
 				</p>
+				<p>{{connections.count}} passenger(s)</p>
 			</aside>
 
 		</div> <!-- #main -->
@@ -100,10 +102,10 @@
 
 <template name="train_controls">
 	
-	{{#if equals myconnection currentengineman}}
-		<div class="grid_50 vgrid_100">
+	<!-- {{#if equals myconnection currentengineman}}-->
+		<div class="grid_50">
 			<!--<label for="direction">direction: </label><br />-->
-			<div class="vgrid_25 bottom boxouter">
+			<div class="bottom boxouter" style="position: relative; top: 70px;">
 				<div class="grid_50">
 					&nbsp;
 				</div>
@@ -111,8 +113,8 @@
 					forward
 				</div>
 			</div>
-			<div class="vgrid_50 boxouter">
-				<div class="grid_50 boxinner">
+			<div class="boxouter">
+				<div class="grid_50 boxinner" style="position: relative; top: 108px;">
 					stop
 				</div>
 				<div class="grid_50">
@@ -120,11 +122,11 @@
 					<input type="range" class="direction vertical" orient="vertical" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
 				</div>
 			</div>
-			<div class="vgrid_25 top boxouter">
+			<div class="top boxouter">
 				<div class="grid_50">
 					&nbsp;
 				</div>
-				<div class="grid_50 boxinner">
+				<div class="grid_50 boxinner" style="text-align: center;">
 					rev
 				</div>
 			</div>
@@ -137,16 +139,17 @@
 					<!-- <input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /> -->
 					<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="5" />
 				</div>
-				<div class="grid_50">
+				<div class="grid_50 rot_270" style="position: relative; top: 12px; left: 12px;">
 					speed
 				</div>
 			</div>
 		</div>
 		
-		
+	<!--
 	{{else}}
-		&nbsp;
+		&nbsp;vgrid_50
 	{{/if}}
+	-->
 	
 </template>
 
@@ -164,15 +167,17 @@
 
 	<h3>
 	{{#if currentengineman}}
-		<!-- Your current engineman is: {{currentengineman}}-->
+		<!-- Your current engineer is: {{currentengineman}}-->
 			
 		{{#if equals myconnection currentengineman}}
-			<input type="button" value="leave driver's cab" class="button leave" name="leave" />
+			<input type="button" value="leave 
+driver's cab" class="button leave" name="leave" />
 		{{/if}}
 			
 			
 	{{ else }}
-			<input type="button" value="become engineman" class="button engineman" name="engineman" />
+			<input type="button" value="become
+engineer" class="button engineman" name="engineman" />
 	{{/if}}
 	</h3>
 	
@@ -196,7 +201,7 @@
 		{{/if}}
 		- 
 		{{#if equals _id currentengineman}}
-			(<b>engineman</b>)
+			(<b>engineer</b>)
 		{{ else }}
 			(passenger)
 		{{/if}}
