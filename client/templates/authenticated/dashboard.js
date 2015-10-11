@@ -1,44 +1,45 @@
-Template.dashboard.onCreated( () => {
-  Template.instance().subscribe( 'train' );
+Template.registerHelper('equals', function (a, b) {
+	return a === b;
 });
 
+Template.dashboard.onCreated( () => {
+  Template.instance().subscribe( 'train' );
+  //Template.instance().subscribe( 'connections' );
+  Template.instance().subscribe( 'userPresence' );
+  
+});
+
+
 Template.dashboard.helpers({
-		getTargetspeed: function() {
-			let query = Train.findOne({ targetspeed: {$ne: "" } }, { fields: {'targetspeed': 1 }} );
-			if(query) {
-				return query.targetspeed;
-			} else {
-				return 0;
-			}
-		},
-		getCurrentspeed: function() {
-			let query = Train.findOne({ currentspeed: {$ne: "" } }, { fields: {'currentspeed': 1 }} );
-			if(query) {
-				return query.currentspeed;
-			} else {
-				return 0;
-			}
-		},
-		/*
-		
-		top: function() {
-			dep.depend();
-			
-			var serverTime = (new Date).getTime() + Session.get("serverDiff");
-			
-			var totalTime = (this.finishAt - this.createdAt);
-			var elapsedTime = (serverTime - this.createdAt);
-			var percentage = Math.min(1, elapsedTime / totalTime);
-			
-			return this.source_top + (this.target_top - this.source_top) * percentage; 
-		},*/
-	}); 
+	/*
+	getTargetspeed: function() {
+		let query = Train.findOne({ targetspeed: {$ne: "" } }, { fields: {'targetspeed': 1 }} );
+		if(query) {
+			return query.targetspeed;
+		} else {
+			return 0;
+		}
+	},
+	getCurrentspeed: function() {
+		let query = Train.findOne({ currentspeed: {$ne: "" } }, { fields: {'currentspeed': 1 }} );
+		if(query) {
+			return query.currentspeed;
+		} else {
+			return 0;
+		}
+	},
+	*/
+	trains: function () {
+		return Train.find({});
+	},
+	connections: function () {
+		return Connections.find({});
+	},
+});
+
 
 Template.dashboard.events({
-		"change #targetspeed": function (event) {
-			// current value: $(event.currentTarget).val()
-			Meteor.call("setTargetspeed", $(event.currentTarget).val());
-			
-			
-		},
-	});
+	"change #targetspeed": function (event) {
+		Meteor.call("setTargetspeed", $(event.currentTarget).val());
+	},
+});

@@ -1,6 +1,15 @@
 <template name="dashboard">
 	<h3>Dashboard</h3>
 	
+		{{#each trains}}
+			{{> train}}
+		{{/each}}
+		
+		
+		{{#each connections}}
+			{{> connection}}
+		{{/each}}
+	
   <!--
 	<div class="steering">
 		<div class="speed1"><div class="speedinner">speed 1</div></div>
@@ -8,17 +17,38 @@
 		<div class="speed3"><div class="speedinner">speed 3</div></div>
 	</div>
 	-->
-	<div class="container"></div>
-	
+		<!--
 		<label for="targetspeed">targetspeed: </label><br />
 		<input type="number" id="targetspeed" name="targetspeed" value="{{getTargetspeed}}" min="-50" max="50" />
 		<br />
 		
 		<label for="currentspeed">current speed: </label><br />
-		<input type="number" id="currentspeed" name="currentspeed" value="{{getCurrentspeed}}" readonly>
-	
-	
+		<!- - <input type="number" id="currentspeed" name="currentspeed" value="{{getCurrentspeed}}" readonly>- ->
+		{{getCurrentspeed}}
+		
+		<label for="currentspeed">direction: </label><br />
+		<!- - <input type="number" id="currentspeed" name="currentspeed" value="{{getCurrentdirection}}" readonly>- ->
+		{{getCurrentdirection}}
+		
+		<h2>
+		your current conductor is: {{getCurrentConductor}}
+		
+		{{#if equals currentUser.username getCurrentConductor}}
+		Your are the current conductor.
+		{{ else }}
+		
+			{{#if equals currentUser.username getCurrentConductor}}
+			
+			{{/if}}
+			
+		
+		{{/if}}
+		
+		</h2>-->
+			
 	<!--
+	
+	<div class="container"></div>
     <div id="tachometer">
                   <div class="ii">
                       <div><b><span class="num_1">0</span></b></div>
@@ -47,4 +77,48 @@
          <div class="pin"><div class="inner"></div></div> 
     </div>
     -->
+</template>
+
+
+<template name="connection">
+	user: 
+</template>
+
+<template name="train">
+
+	<label for="targetspeed">targetspeed: </label><br />
+	<input type="number" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /><br />
+	<label for="direction">direction: </label>
+	<div>
+		<input type="checkbox" id="direction" name="direction" class="switch" />
+		<label for="direction">forward</label>
+	</div>
+
+
+	<br />
+	
+	<label for="currentspeed">current speed: </label><br />
+	<!-- <input type="number" id="currentspeed" name="currentspeed" value="{{currentspeed}}" readonly>-->
+	{{currentspeed}}
+	
+	<label for="currentdirection">direction: </label><br />
+	<!-- <input type="number" id="currentdirection" name="currentdirection" value="{{currentdirection}}" readonly>-->
+	{{currentdirection}}
+	
+	<h3>
+	
+	
+	{{#if equals currentUser.username currentconductor}}
+		Your are the current conductor.
+	{{ else }}
+	
+		{{#if equals currentconductor ""}}
+			There is no conductor at the moment - click here to control the train.
+		{{ else }}
+			Your current conductor is: {{currentconductor}}
+		{{/if}}
+	
+	{{/if}}
+	
+	</h3>
 </template>

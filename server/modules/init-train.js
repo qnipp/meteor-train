@@ -10,9 +10,8 @@ let trainConfig = [
 let initTrain = () => {	
 	let speedsExist    = Train.find().count();
 
-	if ( !speedsExist || speedsExist < 2 ) {
-		Train.update({}, { $set: { targetspeed: 0 }}, {upsert: true} );
-		Train.update({}, { $set: { currentspeed: 0 }}, {upsert: true} );
+	if ( !speedsExist ) {
+		Train.update({}, { $set: { targetspeed: 0, direction: 1, currentconductor: '' }}, {upsert: true} );
 	}
 };
 
