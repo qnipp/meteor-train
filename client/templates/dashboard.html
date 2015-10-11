@@ -5,10 +5,82 @@
 			{{> train}}
 		{{/each}}
 		
+		Your connection: {{myconnection}}<br />
 		
-		{{#each connections}}
-			{{> connection}}
-		{{/each}}
+		Online user:
+		<ul>
+			{{#each connections}}
+				{{> connection}}
+			{{/each}}
+		</ul>
+</template>
+
+
+<template name="connection">
+	<li>user:
+		{{#if equals _id myconnection}}
+			<b>You</b>
+		{{ else }}
+			{{_id}}
+		{{/if}}
+	
+		{{#if userId}}
+			({{userId}})
+		{{ else }}
+			(guest)
+		{{/if}}
+		- {{state}}
+	</li>
+</template>
+
+<template name="train">
+
+	<label for="targetspeed">targetspeed: </label><br />
+	<input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /><br />
+	<label for="direction">direction: </label>
+	<div>
+		<input type="checkbox" id="direction" name="direction" class="switch direction" checked="{{direction}}" />
+		<label for="direction">forward</label>
+	</div>
+
+
+	<br />
+	
+	<label for="currentspeed">current speed: </label><br />
+	<!-- <input type="number" id="currentspeed" name="currentspeed" value="{{currentspeed}}" readonly>-->
+	{{currentspeed}}
+	
+	<label for="currentdirection">direction: </label><br />
+	<!-- <input type="number" id="currentdirection" name="currentdirection" value="{{currentdirection}}" readonly>-->
+	{{currentdirection}}
+	
+	<h3>
+	{{#if equals currentUser.username currentengineman}}
+		You are the current engineman.
+	{{ else }}
+	
+		{{#if equals currentengineman ""}}
+			There is no engineman at the moment - click here to control the train.
+		{{ else }}
+			Your current engineman is: {{currentengineman}}
+		{{/if}}
+	
+	{{/if}}
+	
+	</h3>
+</template>
+
+
+
+
+
+
+
+
+
+
+<template name="oldstuff">
+	old stuff
 	
   <!--
 	<div class="steering">
@@ -30,23 +102,8 @@
 		<!- - <input type="number" id="currentspeed" name="currentspeed" value="{{getCurrentdirection}}" readonly>- ->
 		{{getCurrentdirection}}
 		
-		<h2>
-		your current conductor is: {{getCurrentConductor}}
-		
-		{{#if equals currentUser.username getCurrentConductor}}
-		Your are the current conductor.
-		{{ else }}
-		
-			{{#if equals currentUser.username getCurrentConductor}}
 			
-			{{/if}}
-			
-		
-		{{/if}}
-		
-		</h2>-->
-			
-	<!--
+	<!- -
 	
 	<div class="container"></div>
     <div id="tachometer">
@@ -77,48 +134,4 @@
          <div class="pin"><div class="inner"></div></div> 
     </div>
     -->
-</template>
-
-
-<template name="connection">
-	user: 
-</template>
-
-<template name="train">
-
-	<label for="targetspeed">targetspeed: </label><br />
-	<input type="number" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /><br />
-	<label for="direction">direction: </label>
-	<div>
-		<input type="checkbox" id="direction" name="direction" class="switch" />
-		<label for="direction">forward</label>
-	</div>
-
-
-	<br />
-	
-	<label for="currentspeed">current speed: </label><br />
-	<!-- <input type="number" id="currentspeed" name="currentspeed" value="{{currentspeed}}" readonly>-->
-	{{currentspeed}}
-	
-	<label for="currentdirection">direction: </label><br />
-	<!-- <input type="number" id="currentdirection" name="currentdirection" value="{{currentdirection}}" readonly>-->
-	{{currentdirection}}
-	
-	<h3>
-	
-	
-	{{#if equals currentUser.username currentconductor}}
-		Your are the current conductor.
-	{{ else }}
-	
-		{{#if equals currentconductor ""}}
-			There is no conductor at the moment - click here to control the train.
-		{{ else }}
-			Your current conductor is: {{currentconductor}}
-		{{/if}}
-	
-	{{/if}}
-	
-	</h3>
 </template>
