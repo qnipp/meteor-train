@@ -3,35 +3,11 @@ Template.registerHelper('equals', function (a, b) {
 	return a === b;
 });
 
+//// dashboard
+
 Template.dashboard.onCreated( function() {
 	Template.instance().subscribe( 'train' );
 	Template.instance().subscribe( 'userPresence' );
-});
-
-Template.train.onCreated( function() {
-	//console.log('updating myconnection in onCreated: '+ Meteor.connection._lastSessionId);
-	this.myconnection = new ReactiveVar( Meteor.connection._lastSessionId );
-});
-
-Template.train.onRendered( function() {
-	//console.log('updating myconnection in rendered: '+ Meteor.connection._lastSessionId);
-	if(Meteor.connection._lastSessionId == null) {
-		var myconn = this.myconnection;
-		var timeoutMyconnection;
-		
-		console.log('myconnection is null in rendered: '+ Meteor.connection._lastSessionId + ' starting interval');
-		
-		timeoutMyconnection = Meteor.setInterval(
-			function(){
-				console.log('updating myconnection in interval: '+ Meteor.connection._lastSessionId);
-				if(Meteor.connection._lastSessionId != null) {
-					myconn.set(Meteor.connection._lastSessionId);
-					Meteor.clearInterval(timeoutMyconnection);
-				}
-			}, 1000);
-	} else {
-		this.myconnection.set(Meteor.connection._lastSessionId);
-	}
 });
 
 Template.dashboard.helpers({
@@ -43,8 +19,63 @@ Template.dashboard.helpers({
 	},
 });
 
-Template.train.helpers({
-	direction: function () {
+
+
+//// train
+
+Template.train_controls.onCreated( function() {
+	this.myconnection = new ReactiveVar( Meteor.connection._lastSessionId );
+});
+Template.train_cab.onCreated( function() {
+	this.myconnection = new ReactiveVar( Meteor.connection._lastSessionId );
+});
+
+
+Template.train_controls.onRendered( function() {
+	//console.log('updating myconnection in rendered: '+ Meteor.connection._lastSessionId);
+	if(Meteor.connection._lastSessionId == null) {
+		var myconn = this.myconnection;
+		var timeout_train_controls;
+		
+		console.log('train_controls - myconnection is null in rendered: '+ Meteor.connection._lastSessionId + ' starting interval');
+		
+		timeout_train_controls = Meteor.setInterval(
+			function(){
+				console.log('train_controls - updating myconnection in interval: '+ Meteor.connection._lastSessionId);
+				if(Meteor.connection._lastSessionId != null) {
+					myconn.set(Meteor.connection._lastSessionId);
+					Meteor.clearInterval(timeout_train_controls);
+				}
+			}, 1000);
+	} else {
+		this.myconnection.set(Meteor.connection._lastSessionId);
+	}
+});
+
+Template.train_cab.onRendered( function() {
+	//console.log('updating myconnection in rendered: '+ Meteor.connection._lastSessionId);
+	if(Meteor.connection._lastSessionId == null) {
+		var myconn = this.myconnection;
+		var timeout_train_cab;
+		
+		console.log('train_cab - myconnection is null in rendered: '+ Meteor.connection._lastSessionId + ' starting interval');
+		
+		timeout_train_cab = Meteor.setInterval(
+			function(){
+				console.log('train_cab - updating myconnection in interval: '+ Meteor.connection._lastSessionId);
+				if(Meteor.connection._lastSessionId != null) {
+					myconn.set(Meteor.connection._lastSessionId);
+					Meteor.clearInterval(timeout_train_cab);
+				}
+			}, 1000);
+	} else {
+		this.myconnection.set(Meteor.connection._lastSessionId);
+	}
+});
+
+
+Template.train_controls.helpers({
+	directioncheck: function () {
 		//console.log(this.direction);
 		return this.direction == 1 ? 'checked' : false;
 	},
@@ -53,6 +84,47 @@ Template.train.helpers({
 		//return Meteor.connection._lastSessionId;
 	}
 });
+
+
+Template.train_cab.helpers({
+	myconnection: function () {
+		return Template.instance().myconnection.get();
+		//return Meteor.connection._lastSessionId;
+	}
+});
+
+
+
+Template.train_controls.events({
+	"change input.targetspeed": function (event) {
+		// current value: $(event.currentTarget).val()
+		//console.log('setTargetspeed: '+ $(event.currentTarget).val() );
+		
+		Meteor.call("setTargetspeed", parseInt($(event.currentTarget).val()) );
+	},
+	"change input.direction": function (event) {
+		// current value: $(event.currentTarget).prop('checked')
+		//console.log('direction: '+ $(event.currentTarget).prop('checked'));
+		
+		//Meteor.call("setDirection", $(event.currentTarget).prop('checked') ? 1 : -1);
+		Meteor.call("setDirection", parseInt($(event.currentTarget).val()));
+	},
+});
+
+Template.train_cab.events({
+	"click input.engineman": function (event) {
+		// current value: $(event.currentTarget).prop('checked')
+		//console.log('direction: '+ $(event.currentTarget).prop('checked'));
+		
+		Meteor.call("setEngineman", Meteor.connection._lastSessionId, false );
+	},
+	"click input.leave": function (event) {
+		Meteor.call("setEngineman", Meteor.connection._lastSessionId, true );
+	},
+});
+
+
+//// connection
 
 Template.connection.helpers({
 	myconnection: function () {
@@ -76,32 +148,9 @@ Template.connection.helpers({
 		} else {
 			return "";
 		}
-	},
+	}
 });
 
-Template.train.events({
-	"click input.engineman": function (event) {
-		// current value: $(event.currentTarget).prop('checked')
-		//console.log('direction: '+ $(event.currentTarget).prop('checked'));
-		
-		Meteor.call("setEngineman", Meteor.connection._lastSessionId, false );
-	},
-	"click input.leave": function (event) {
-		Meteor.call("setEngineman", Meteor.connection._lastSessionId, true );
-	},
-});
 
-Template.dashboard.events({
-	"change input.targetspeed": function (event) {
-		// current value: $(event.currentTarget).val()
-		//console.log('setTargetspeed: '+ $(event.currentTarget).val() );
-		
-		Meteor.call("setTargetspeed", parseInt($(event.currentTarget).val()) );
-	},
-	"change input.direction": function (event) {
-		// current value: $(event.currentTarget).prop('checked')
-		//console.log('direction: '+ $(event.currentTarget).prop('checked'));
-		
-		Meteor.call("setDirection", $(event.currentTarget).prop('checked') ? 1 : -1);
-	},
-});
+
+

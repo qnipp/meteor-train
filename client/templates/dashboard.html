@@ -1,17 +1,184 @@
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="A toy train controlled by Meteor – as submitted to the Meteor Global Distributed Hackathon 2015.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    </head>
+    
+    <body>
+        
+        
+    </body>
+    
+    
+    
 <template name="dashboard">
-	<h3>Dashboard</h3>
-	
-		{{#each trains}}
-			{{> train}}
-		{{/each}}
-				
-		Online user:
-		<ul>
-			{{#each connections}}
-				{{> connection}}
-			{{/each}}
-		</ul>
+
+	<!--[if lt IE 8]>
+		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
+
+	<div class="header-container">
+		<header class="wrapper clearfix">
+			<h1 class="title">qnipp - The Meteor Train</h1>
+			<nav>
+				<ul>
+					<li><a href="#">Logo</a></li>
+				</ul>
+			</nav>
+		</header>
+	</div>
+
+	<div class="main-container">
+		<div class="main wrapper clearfix">
+
+			<article>
+			<!--
+				<header>
+					<h1>current speed</h1>
+					<p>Here comes the speedometer</p>
+					<p>
+					
+					</p>
+				</header>
+				//-->
+				<section>
+					<div class="grid_100">
+						
+						<div class="grid_75">
+							{{>tachometer}}
+							<!--
+							{{#each trains}}
+								{{> train_speed}}
+							{{/each}}
+							-->
+						</div>
+						
+						<div class="grid_25">
+							{{#each trains}}
+								{{> train_controls}}
+							{{/each}}
+						</div>
+					</div>
+						
+				</section>
+				<footer>
+					<h3>passengers</h3>
+					<p>{{connections.count}}</p>
+					<!--
+					<ul>
+						{{#each connections}}
+							{{> connection}}
+						{{/each}}
+					</ul>
+					-->
+				</footer>
+			</article>
+
+			<aside>
+				<h3>driver's cab</h3>
+				<p>
+				{{#each trains}}
+					{{> train_cab}}
+				{{/each}}
+				</p>
+			</aside>
+
+		</div> <!-- #main -->
+	</div> <!-- #main-container -->
+
+	<div class="footer-container">
+		<footer class="wrapper">
+			<h3>&copy; qnipp 2015 - made with &hearts; in Oslip.</h3>
+		</footer>
+	</div>
+		
 </template>
+
+
+
+<template name="train_controls">
+	
+	{{#if equals myconnection currentengineman}}
+		<div class="grid_50 vgrid_100">
+			<!--<label for="direction">direction: </label><br />-->
+			<div class="vgrid_25 bottom boxouter">
+				<div class="grid_50">
+					&nbsp;
+				</div>
+				<div class="grid_50 boxinner">
+					forward
+				</div>
+			</div>
+			<div class="vgrid_50 boxouter">
+				<div class="grid_50 boxinner">
+					stop
+				</div>
+				<div class="grid_50">
+					<!-- <input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /> -->
+					<input type="range" class="direction vertical" orient="vertical" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
+				</div>
+			</div>
+			<div class="vgrid_25 top boxouter">
+				<div class="grid_50">
+					&nbsp;
+				</div>
+				<div class="grid_50 boxinner">
+					rev
+				</div>
+			</div>
+		</div>
+		
+		<div class="grid_50">
+			<div>
+				<div class="grid_50">
+					<!--<label for="targetspeed">targetspeed: </label>-->
+					<!-- <input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /> -->
+					<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="5" />
+				</div>
+				<div class="grid_50">
+					speed
+				</div>
+			</div>
+		</div>
+		
+		
+	{{else}}
+		&nbsp;
+	{{/if}}
+	
+</template>
+
+<template name="train_speed">
+
+	<label for="currentspeed">current speed: </label>
+	{{currentspeed}}
+	
+	<label for="currentdirection">direction: </label>
+	{{currentdirection}}<br >
+</template>
+
+
+<template name="train_cab">
+
+	<h3>
+	{{#if currentengineman}}
+		<!-- Your current engineman is: {{currentengineman}}-->
+			
+		{{#if equals myconnection currentengineman}}
+			<input type="button" value="leave driver's cab" class="button leave" name="leave" />
+		{{/if}}
+			
+			
+	{{ else }}
+			<input type="button" value="become engineman" class="button engineman" name="engineman" />
+	{{/if}}
+	</h3>
+	
+</template>
+
+
 
 
 <template name="connection">
@@ -36,61 +203,11 @@
 	</li>
 </template>
 
-<template name="train">
-
-	<h3>
-		{{#if currentengineman}}
-			Your current engineman is: {{currentengineman}}
-		{{ else }}
-			<input type="button" value="become engineman" class="button engineman" name="engineman" />
-		{{/if}}
-	</h3>
-	
-	{{#if equals myconnection currentengineman}}
-			
-		<label for="targetspeed">targetspeed: </label><br />
-		<input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /><br />
-		<label for="direction">direction: </label>
-		<div>
-			<input type="checkbox" id="direction" name="direction" class="switch direction" checked="{{direction}}" />
-			<label for="direction">forward</label>
-		</div>
-		<br />
-		
-		<input type="button" value="leave driver's cab" class="button leave" name="leave" />
-		<br />
-		
-	{{/if}}
-	
-	<label for="currentspeed">current speed: </label>
-	<!-- <input type="number" id="currentspeed" name="currentspeed" value="{{currentspeed}}" readonly>-->
-	{{currentspeed}}<br >
-	
-	<label for="currentdirection">direction: </label>
-	<!-- <input type="number" id="currentdirection" name="currentdirection" value="{{currentdirection}}" readonly>-->
-	{{currentdirection}}<br >
-	
-</template>
-
-
-
-
 
 
 <template name="oldstuff">
 	old stuff
 	
-	{{#if equals currentUser.username currentengineman}}
-		You are the current engineman.
-	{{ else }}
-	
-		{{#if equals currentengineman ""}}
-			There is no engineman at the moment - click here to control the train.
-		{{ else }}
-			Your current engineman is: {{currentengineman}}
-		{{/if}}
-	
-	{{/if}}
   <!--
 	<div class="steering">
 		<div class="speed1"><div class="speedinner">speed 1</div></div>
