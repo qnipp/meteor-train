@@ -46,7 +46,15 @@ UserPresenceSettings({
 	idleDelay: 10000, // How long it takes to go idle
 	tickDelay: 5000, // How often the server will check for idle
 	onDisconnect: function(userPresence) {
+		
 		 // Do something with userPresence data on user disconnect
 		console.log('User: '+ userPresence._id + ' has disconnected.');
+		
+		Train.update({ currentengineman: userPresence._id }, { $set: {currentengineman: "", targetspeed: 0}}, null, function(error, rowsaffected) {
+			/*if(rowsaffected === 1) {
+				Meteor.call("setTargetspeed", 0);
+			}*/
+			console.log('onDisconnect update message: '+ error + " - "+ rowsaffected);
+		});
 	}
 });

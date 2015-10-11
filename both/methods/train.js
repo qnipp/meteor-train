@@ -13,7 +13,7 @@ Meteor.methods({
 		}*/
 		 /*user: Meteor.userId(),*/ 
 		
-		Train.update({ targetspeed: {$ne: "" } }, { $set: {targetspeed: targetspd }}, {upsert: true} );
+		Train.update({}, { $set: {targetspeed: targetspd }});
 		
 	},
 	// seting speed for train
@@ -27,7 +27,32 @@ Meteor.methods({
 		}*/
 		 /*user: Meteor.userId(),*/ 
 		
-		Train.update({ direction: {$ne: "" } }, { $set: {direction: direction }}, {upsert: true} );
+		Train.update({}, { $set: {direction: direction }} );
 		
+	},
+	// 
+	setEngineman: function (connection, leaving) {
+		check(connection, String);
+		check(leaving, Boolean);
+		
+		if(connection === "") {
+			throw new Meteor.Error("setEngine needs a current connection");
+		}
+		
+		if(leaving === true) {
+			Train.update({ currentengineman: connection }, { $set: {currentengineman: "", targetspeed: 0}}, null, function(error, rowsaffected) {
+				if(rowsaffected !== 1) {
+					throw new Meteor.Error("only you can leave the drivers cab.");
+				}
+				//console.log('setEngineman update message: '+ error + " - "+ rowsaffected);
+			});
+		} else {
+			Train.update({ currentengineman: "" }, { $set: {currentengineman: connection }}, null, function(error, rowsaffected) {
+				if(rowsaffected !== 1) {
+					throw new Meteor.Error("You can only become the engineman, when the drivers cab is empty.");
+				}
+				console.log('setEngineman update message: '+ error + " - "+ rowsaffected);
+			});
+		}
 	}
 });
