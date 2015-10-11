@@ -2,6 +2,10 @@
 	position: relative;
 	width: 60vh;
 	height: 60vh;
+	clear: both;
+	
+	width:  280px;
+	height: 280px;
 }
 
 .tachometer > div {

@@ -2,13 +2,18 @@ var speedInterval = 50;
 var acceleration = .4;
 var speedRange = 256;
 
+var speedOffset = 150;
+var speedFactor = 0.4;
+var startingPulse = 0;
+var startingPulseDecrement = 0;
+
 var pwmPin = 1;
 var directionPin = 5;
 
 var frontWhitePin = 3;
-var frontRedPin = 7;
+var frontRedPin = 15;
 var rearWhitePin = 4;
-var rearRedPin = 15;
+var rearRedPin = 7;
 
 
 Meteor.startup(function() {
@@ -58,6 +63,8 @@ Meteor.startup(function() {
 
 	}
 
+	var starting = startingPulse;
+
 	// Initialize interval for speed updates
 
 	Meteor.setInterval(function() {
@@ -75,19 +82,27 @@ Meteor.startup(function() {
 
 			Train.update({}, {$set: {currentspeed: Math.abs(newspeed), currentdirection: sign(newspeed)}});
 
+			if(sign(newspeed) != train.currentdirection) {
+				starting = startingPulse;
+			}
+
 			if (wpi) {
 
 				// control the engine
 
-				wpi.pwmWrite(pwmPin, Math.floor(Math.abs(newspeed)));
+				wpi.pwmWrite(pwmPin, Math.floor(speedFactor * Math.abs(newspeed)) + (Math.abs(newspeed) > 0 ? speedOffset + starting : 0));
+				if (starting > 0) starting -= startingPulseDecrement;
+
 				wpi.digitalWrite(directionPin, newspeed >= 0 ? 1 : 0);
 
 				// switch the lights
 
-				wpi.digitalWrite(frontWhitePin, oneIf(newspeed > 0));
-				wpi.digitalWrite(frontRedPin, oneIf(newspeed <= 0));
-				wpi.digitalWrite(rearWhitePin, oneIf(newspeed < 0));
-				wpi.digitalWrite(rearRedPin, oneIf(newspeed >= 0));
+				if (newspeed != 0) {
+					wpi.digitalWrite(frontWhitePin, oneIf(newspeed > 0));
+					wpi.digitalWrite(frontRedPin, oneIf(newspeed < 0));
+					wpi.digitalWrite(rearWhitePin, oneIf(newspeed < 0));
+					wpi.digitalWrite(rearRedPin, oneIf(newspeed > 0));
+				}
 
 			} else {
 				console.log("Controlling train: speed = " + Math.abs(newspeed) + "  direction = " + (newspeed >= 0));
@@ -96,10 +111,13 @@ Meteor.startup(function() {
 		}
 
 		if (signedCurrentspeed == 0 && wpi) {
-			wpi.digitalWrite(frontWhitePin, oneIf(train.direction > 0));
-			wpi.digitalWrite(frontRedPin, oneIf(train.direction <= 0));
-			wpi.digitalWrite(rearWhitePin, oneIf(train.direction < 0));
-			wpi.digitalWrite(rearRedPin, oneIf(train.direction >= 0));
+
+			var engineman = (train.currentengineman != "");
+
+			wpi.digitalWrite(frontWhitePin, oneIf(engineman && train.direction > 0));
+			wpi.digitalWrite(frontRedPin, oneIf(engineman && train.direction <= 0));
+			wpi.digitalWrite(rearWhitePin, oneIf(engineman && train.direction < 0));
+			wpi.digitalWrite(rearRedPin, oneIf(engineman && train.direction >= 0));
 		}
 
 	}, speedInterval);
