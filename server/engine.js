@@ -28,7 +28,7 @@ Meteor.startup(function() {
 		wpi = null;
 	}
 
-	Train.update({}, {$set: {wpi: wpi ? "available" : "not-available", targetspeed: 0, direction: 1, currentspeed: 0, currentdirection: 1}}, {upsert: true});
+	Train.update({}, {$set: {wpi: wpi ? "available" : "not-available", targetspeed: 0, direction: 1, currentspeed: 0, currentdirection: 1, currentengineman: ''}}, {upsert: true});
 
 	if (wpi) {
 

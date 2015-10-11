@@ -4,9 +4,7 @@
 		{{#each trains}}
 			{{> train}}
 		{{/each}}
-		
-		Your connection: {{myconnection}}<br />
-		
+				
 		Online user:
 		<ul>
 			{{#each connections}}
@@ -19,42 +17,69 @@
 <template name="connection">
 	<li>user:
 		{{#if equals _id myconnection}}
-			<b>You</b>
+			<b>{{_id}}</b>
 		{{ else }}
 			{{_id}}
 		{{/if}}
 	
 		{{#if userId}}
-			({{userId}})
+			(user: {{username}})
 		{{ else }}
 			(guest)
 		{{/if}}
-		- {{state}}
+		- 
+		{{#if equals _id currentengineman}}
+			(<b>engineman</b>)
+		{{ else }}
+			(passenger)
+		{{/if}}
 	</li>
 </template>
 
 <template name="train">
 
-	<label for="targetspeed">targetspeed: </label><br />
-	<input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /><br />
-	<label for="direction">direction: </label>
-	<div>
-		<input type="checkbox" id="direction" name="direction" class="switch direction" checked="{{direction}}" />
-		<label for="direction">forward</label>
-	</div>
-
-
-	<br />
-	
-	<label for="currentspeed">current speed: </label><br />
-	<!-- <input type="number" id="currentspeed" name="currentspeed" value="{{currentspeed}}" readonly>-->
-	{{currentspeed}}
-	
-	<label for="currentdirection">direction: </label><br />
-	<!-- <input type="number" id="currentdirection" name="currentdirection" value="{{currentdirection}}" readonly>-->
-	{{currentdirection}}
-	
 	<h3>
+		{{#if currentengineman}}
+			Your current engineman is: {{currentengineman}}
+		{{ else }}
+			<input type="button" value="become engineman" class="button engineman" name="engineman" />
+		{{/if}}
+	</h3>
+	
+	{{#if equals myconnection currentengineman}}
+			
+		<label for="targetspeed">targetspeed: </label><br />
+		<input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /><br />
+		<label for="direction">direction: </label>
+		<div>
+			<input type="checkbox" id="direction" name="direction" class="switch direction" checked="{{direction}}" />
+			<label for="direction">forward</label>
+		</div>
+		<br />
+		
+		<input type="button" value="leave driver's cab" class="button leave" name="leave" />
+		<br />
+		
+	{{/if}}
+	
+	<label for="currentspeed">current speed: </label>
+	<!-- <input type="number" id="currentspeed" name="currentspeed" value="{{currentspeed}}" readonly>-->
+	{{currentspeed}}<br >
+	
+	<label for="currentdirection">direction: </label>
+	<!-- <input type="number" id="currentdirection" name="currentdirection" value="{{currentdirection}}" readonly>-->
+	{{currentdirection}}<br >
+	
+</template>
+
+
+
+
+
+
+<template name="oldstuff">
+	old stuff
+	
 	{{#if equals currentUser.username currentengineman}}
 		You are the current engineman.
 	{{ else }}
@@ -66,22 +91,6 @@
 		{{/if}}
 	
 	{{/if}}
-	
-	</h3>
-</template>
-
-
-
-
-
-
-
-
-
-
-<template name="oldstuff">
-	old stuff
-	
   <!--
 	<div class="steering">
 		<div class="speed1"><div class="speedinner">speed 1</div></div>
