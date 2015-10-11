@@ -17,5 +17,3 @@ let initTrain = () => {
 };
 
 Modules.server.initTrain = initTrain;
-
-
