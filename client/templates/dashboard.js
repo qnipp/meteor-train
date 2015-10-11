@@ -2,13 +2,11 @@ Template.registerHelper('equals', function (a, b) {
 	return a === b;
 });
 
-Template.dashboard.onCreated( () => {
+Template.dashboard.onCreated( function() {
   Template.instance().subscribe( 'train' );
   //Template.instance().subscribe( 'connections' );
   Template.instance().subscribe( 'userPresence' );
-  
 });
-
 
 Template.dashboard.helpers({
 	/*
@@ -33,13 +31,13 @@ Template.dashboard.helpers({
 		return Train.find({});
 	},
 	connections: function () {
-		return Connections.find({});
+		return UserPresences.find({});
 	},
 });
 
-
 Template.dashboard.events({
 	"change #targetspeed": function (event) {
+		// current value: $(event.currentTarget).val()
 		Meteor.call("setTargetspeed", $(event.currentTarget).val());
 	},
 });

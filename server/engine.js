@@ -55,7 +55,7 @@ Meteor.startup(function() {
 
 			if (wpi) {
 				wpi.pwmWrite(pwmPin, Math.floor(Math.abs(newspeed)));
-				wpi.digitalWrite(directionPin, newspeed >= 0);
+				wpi.digitalWrite(directionPin, newspeed >= 0 ? 1 : 0);
 			} else {
 				console.log("Controlling train: speed = " + Math.abs(newspeed) + "  direction = " + (newspeed >= 0));
 			}
