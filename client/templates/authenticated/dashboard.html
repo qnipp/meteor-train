@@ -1,3 +1,50 @@
 <template name="dashboard">
-  <h3>Dashboard</h3>
+	<h3>Dashboard</h3>
+	
+  <!--
+	<div class="steering">
+		<div class="speed1"><div class="speedinner">speed 1</div></div>
+		<div class="speed2"><div class="speedinner">speed 2</div></div>
+		<div class="speed3"><div class="speedinner">speed 3</div></div>
+	</div>
+	-->
+	<div class="container"></div>
+	
+		<label for="targetspeed">targetspeed: </label><br />
+		<input type="number" id="targetspeed" name="targetspeed" value="{{getTargetspeed}}" min="0" max="50" />
+		<br />
+		
+		<label for="currentspeed">current speed: </label><br />
+		<input type="number" id="currentspeed" name="currentspeed" value="{{getCurrentspeed}}" readonly>
+	
+	
+	<!--
+    <div id="tachometer">
+                  <div class="ii">
+                      <div><b><span class="num_1">0</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_2">1</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_3">2</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_4">3</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_5">4</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_6">5</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_7">6</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_8">7</span></b></div>
+                      <div><b></b></div>
+                      <div><b><span class="num_9">8</span></b></div>
+                  </div> 
+                <div id="redline"></div>
+                
+          <div class="line" style="animation: pendulum; 
+          animation-iteration-count: infinite; animation-duration: 4s;"></div>
+          
+         <div class="pin"><div class="inner"></div></div> 
+    </div>
+    -->
 </template>
