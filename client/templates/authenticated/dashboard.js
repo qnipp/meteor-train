@@ -4,11 +4,20 @@ Template.dashboard.onCreated( () => {
 
 Template.dashboard.helpers({
 		getTargetspeed: function() {
-			return Train.find({ targetspeed: {$ne: "" } }, { fields: {'targetspeed': 1 }} );
-			
+			let query = Train.findOne({ targetspeed: {$ne: "" } }, { fields: {'targetspeed': 1 }} );
+			if(query) {
+				return query.targetspeed;
+			} else {
+				return 0;
+			}
 		},
 		getCurrentspeed: function() {
-			return Train.find({ currentspeed: {$ne: "" } }, { fields: {'currentspeed': 1 }} );
+			let query = Train.findOne({ currentspeed: {$ne: "" } }, { fields: {'currentspeed': 1 }} );
+			if(query) {
+				return query.currentspeed;
+			} else {
+				return 0;
+			}
 		},
 		/*
 		
@@ -28,7 +37,7 @@ Template.dashboard.helpers({
 Template.dashboard.events({
 		"change #targetspeed": function (event) {
 			// current value: $(event.currentTarget).val()
-			Meteor.call("setTargetspeed", $(event.currentTarget).val(), this);
+			Meteor.call("setTargetspeed", $(event.currentTarget).val());
 			
 			
 		},
