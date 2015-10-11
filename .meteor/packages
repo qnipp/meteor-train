@@ -7,7 +7,6 @@ accounts-password
 accounts-base
 jquery
 check
-audit-argument-checks
 themeteorchef:jquery-validation
 twbs:bootstrap
 browser-policy
@@ -34,3 +33,4 @@ reactive-var
 reactive-dict
 aldeed:collection2
 tracker
+dpid:user-presence
