@@ -4,7 +4,7 @@ Template.tachometer.helpers({
 		var angle = -120 + train.currentspeed / 100 * 240;
 
 		return {
-			style: 'transform: rotate(' + angle + 'deg)'
+			style: 'transform: rotate(' + angle + 'deg); -webkit-transform: rotate(' + angle + 'deg); -ms-transform: rotate(' + angle + 'deg)'
 		}
 	},
 	selectorStyle: function() {
@@ -12,7 +12,7 @@ Template.tachometer.helpers({
 		var angle = -120 + train.targetspeed / 100 * 240;
 
 		return {
-			style: 'transform: rotate(' + angle + 'deg)'
+			style: 'transform: rotate(' + angle + 'deg); -webkit-transform: rotate(' + angle + 'deg); -ms-transform: rotate(' + angle + 'deg)'
 		}
 	},
 	speed: function() {
