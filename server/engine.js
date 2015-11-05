@@ -8,12 +8,13 @@ var startingPulse = 40;
 var startingPulseDecrement = 10;
 
 var pwmPin = 1;
-var directionPin = 5;
+var directionPin1 = 2;
+var directionPin2 = 3;
 
-var frontWhitePin = 3;
-var frontRedPin = 15;
-var rearWhitePin = 4;
-var rearRedPin = 7;
+var frontWhitePin = 6;
+var frontRedPin = 7;
+var rearWhitePin = 5;
+var rearRedPin = 4;
 
 
 Meteor.startup(function() {
@@ -47,8 +48,10 @@ Meteor.startup(function() {
 
 		// Initialize direction pin
 
-		wpi.pinMode(directionPin, wpi.OUTPUT);
-		wpi.digitalWrite(directionPin, 1);
+		wpi.pinMode(directionPin1, wpi.OUTPUT);
+		wpi.digitalWrite(directionPin1, 1);
+		wpi.pinMode(directionPin2, wpi.OUTPUT);
+		wpi.digitalWrite(directionPin2, 1);
 
 		// Initialize light pins
 
@@ -93,7 +96,8 @@ Meteor.startup(function() {
 				wpi.pwmWrite(pwmPin, Math.floor(speedFactor * Math.abs(newspeed)) + (Math.abs(newspeed) > 0 ? speedOffset + starting : 0));
 				if (starting > 0) starting -= startingPulseDecrement;
 
-				wpi.digitalWrite(directionPin, newspeed >= 0 ? 1 : 0);
+				wpi.digitalWrite(directionPin1, newspeed >= 0 ? 1 : 0);
+				wpi.digitalWrite(directionPin2, newspeed >= 0 ? 0 : 1);
 
 				// switch the lights
 
