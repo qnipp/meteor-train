@@ -34,25 +34,17 @@
 		<div class="main wrapper clearfix">
 
 			<article>
-			<!--
+				<!--
 				<header>
-					<h1>current speed</h1>
-					<p>Here comes the speedometer</p>
-					<p>
-					
-					</p>
+					<h1>&nbsp;</h1>
+					<p>&nbsp;</p>
 				</header>
-				//-->
+				-->
 				<section>
 					<div class="grid_100">
 						
 						<div class="grid_75">
 							{{>tachometer}}
-							<!--
-							{{#each trains}}
-								{{> train_speed}}
-							{{/each}}
-							-->
 						</div>
 						
 						<div class="grid_25">
@@ -63,6 +55,15 @@
 					</div>
 						
 				</section>
+				<footer>
+					<h3>&nbsp;</h3>
+					<p>&nbsp;</p>
+					<p>&nbsp;</p>
+					<p>&nbsp;</p>
+					<p>&nbsp;</p>
+					<p>&nbsp;</p>
+					<p>&nbsp;</p>
+				</footer>
 				<!--
 				<footer>
 					<h3>{{connections.count}} passenger(s)</h3>
@@ -102,7 +103,7 @@
 
 <template name="train_controls">
 	
-	<!-- {{#if equals myconnection currentengineman}}-->
+	{{#if equals myconnection currentengineman}}
 		<div class="grid_50">
 			<!--<label for="direction">direction: </label><br />-->
 			<div class="bottom boxouter" style="position: relative; top: 70px;">
@@ -145,11 +146,9 @@
 			</div>
 		</div>
 		
-	<!--
 	{{else}}
-		&nbsp;vgrid_50
+		&nbsp;
 	{{/if}}
-	-->
 	
 </template>
 

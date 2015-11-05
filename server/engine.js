@@ -4,8 +4,8 @@ var speedRange = 256;
 
 var speedOffset = 150;
 var speedFactor = 0.4;
-var startingPulse = 0;
-var startingPulseDecrement = 0;
+var startingPulse = 40;
+var startingPulseDecrement = 10;
 
 var pwmPin = 1;
 var directionPin = 5;
