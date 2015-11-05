@@ -79,6 +79,7 @@ Template.train_controls.helpers({
 		//console.log(this.direction);
 		return this.direction == 1 ? 'checked' : false;
 	},
+	
 	myconnection: function () {
 		return Template.instance().myconnection.get();
 		//return Meteor.connection._lastSessionId;
@@ -90,7 +91,27 @@ Template.train_cab.helpers({
 	myconnection: function () {
 		return Template.instance().myconnection.get();
 		//return Meteor.connection._lastSessionId;
-	}
+	},
+	currentengineman: function () {
+	//return Template.instance().myconnection.get();
+		var train = Train.findOne({});
+		if(train) {
+			if(train.currentengineman != '') {
+				var isStillhere = UserPresences.findOne({_id: train.currentengineman});
+				if(isStillhere) {
+					return train.currentengineman;
+				} else {
+					Train.update({ currentengineman: train.currentengineman }, { $set: {currentengineman: "", targetspeed: 0}}, null, function(error, rowsaffected) {
+						console.log('unsetEngineman update message: '+ error + " - "+ rowsaffected);
+					});
+				}
+			}
+			return "";
+
+		} else {
+			return "";
+		}
+	},
 });
 
 
@@ -144,7 +165,14 @@ Template.connection.helpers({
 		//return Template.instance().myconnection.get();
 		var train = Train.findOne({});
 		if(train) {
-			return train.currentengineman;
+			if(train.currentengineman != '') {
+				var isStillhere = UserPresences.findOne({_id: train.currentengineman});
+				if(isStillhere) {
+					return train.currentengineman;
+				}
+			}
+			return "";
+
 		} else {
 			return "";
 		}

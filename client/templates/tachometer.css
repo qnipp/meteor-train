@@ -259,6 +259,7 @@
 	padding: 40% 3px 0;
 	margin: -40% -3px 0;
 	z-index: 4;
+	transform: rotate(-120deg);
 }
 .tachometer .selector {
 	left: 50%;
@@ -271,7 +272,7 @@
 	padding: 49% 18px 0;
 	margin: -49% -18px 0;
 	z-index: 7;
-	transform: rotate(32deg);
+	transform: rotate(-120deg);
 }
 .tachometer .selector .triangle {
 	position: absolute;

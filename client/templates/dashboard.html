@@ -24,7 +24,7 @@
 			<h1 class="title">The Meteor Train</h1>
 			<nav>
 				<ul>
-					<li><a href="#"><img src="qnipp_logo_white.png" class="logo" /></a></li>
+					<li><a href="http://qnipp.com" target="_blank"><img src="qnipp_logo_white.png" class="logo" /></a></li>
 				</ul>
 			</nav>
 		</header>
@@ -57,13 +57,16 @@
 				</section>
 				<footer>
 					<h3>&nbsp;</h3>
+					<!--
 					<p>&nbsp;</p>
 					<p>&nbsp;</p>
 					<p>&nbsp;</p>
 					<p>&nbsp;</p>
 					<p>&nbsp;</p>
 					<p>&nbsp;</p>
+					-->
 				</footer>
+				
 				<!--
 				<footer>
 					<h3>{{connections.count}} passenger(s)</h3>
@@ -103,9 +106,8 @@
 
 <template name="train_controls">
 	
-	{{#if equals myconnection currentengineman}}
+	<!--{{#if equals myconnection currentengineman}}-->
 		<div class="grid_50">
-			<!--<label for="direction">direction: </label><br />-->
 			<div class="bottom boxouter" style="position: relative; top: 70px;">
 				<div class="grid_50">
 					&nbsp;
@@ -119,8 +121,11 @@
 					stop
 				</div>
 				<div class="grid_50">
-					<!-- <input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /> -->
-					<input type="range" class="direction vertical" orient="vertical" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
+					{{#if equals myconnection currentengineman}} 
+						<input type="range" class="direction vertical" orient="vertical" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
+					{{else}}
+						<input type="range" class="direction vertical disabled" orient="vertical" id="direction" value="{{direction}}" min="-1" max="1" step="1" disabled="disabled" />
+					{{/if}}
 				</div>
 			</div>
 			<div class="top boxouter">
@@ -136,9 +141,11 @@
 		<div class="grid_50">
 			<div>
 				<div class="grid_50">
-					<!--<label for="targetspeed">targetspeed: </label>-->
-					<!-- <input type="number" class="targetspeed" id="targetspeed" name="targetspeed" value="{{targetspeed}}" min="0" max="50" /> -->
-					<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="5" />
+					{{#if equals myconnection currentengineman}} 
+						<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="5" />
+					{{else}}
+						<input type="range" class="targetspeed vertical disabled" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="5" disabled="disabled" />
+					{{/if}}
 				</div>
 				<div class="grid_50 rot_270" style="position: relative; top: 12px; left: 12px;">
 					speed
@@ -146,9 +153,9 @@
 			</div>
 		</div>
 		
-	{{else}}
-		&nbsp;
-	{{/if}}
+	<!--{{else}}
+		
+	{{/if}}-->
 	
 </template>
 
@@ -156,7 +163,6 @@
 
 	<label for="currentspeed">current speed: </label>
 	{{currentspeed}}
-	
 	<label for="currentdirection">direction: </label>
 	{{currentdirection}}<br >
 </template>
@@ -166,8 +172,6 @@
 
 	<h3>
 	{{#if currentengineman}}
-		<!-- Your current engineer is: {{currentengineman}}-->
-			
 		{{#if equals myconnection currentengineman}}
 			<input type="button" value="leave 
 driver's cab" class="button leave" name="leave" />
