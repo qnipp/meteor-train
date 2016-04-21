@@ -7,14 +7,14 @@
         <meta http-equiv="cleartype" content="on">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     </head>
-    
+
     <body>
-        
-        
+
+
     </body>
-    
-    
-    
+
+
+
 <template name="dashboard">
 
 	<!--[if lt IE 8]>
@@ -31,7 +31,7 @@
 			</nav>
 		</header>
 	</div>
-	
+
 
 	<div class="main-container">
 		<div class="main wrapper clearfix">
@@ -46,7 +46,7 @@
 				{{#each trains}}
 					{{> train_controls}}
 				{{/each}}
-				
+
 				<footer style="clear:both">
 					<h3>&nbsp;</h3>
 					<!--
@@ -58,17 +58,17 @@
 					<p>&nbsp;</p>
 					-->
 				</footer>
-				
+
 				<!--
 				<footer>
 					<h3>{{connections.count}} passenger(s)</h3>
-					
+
 					<ul>
 						{{#each connections}}
 							{{> connection}}
 						{{/each}}
 					</ul>
-					
+
 				</footer>
 				-->
 			</article>
@@ -91,7 +91,7 @@
 			<h3>&copy; qnipp 2015 - made with &hearts; in Oslip.</h3>
 		</footer>
 	</div>
-		
+
 </template>
 
 <template name="train_controls">
@@ -101,10 +101,10 @@
 			<div class="grid_75">
 				{{> tachometer}}
 			</div>
-			
+
 			<div class="grid_25">
 				<div class="grid_50">
-					{{#if equals myconnection currentengineman}} 
+					{{#if equals myconnection currentengineman}}
 						<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" />
 					{{else}}
 						<input type="range" class="targetspeed vertical disabled" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" disabled="disabled" />
@@ -123,7 +123,7 @@
 					&nbsp;
 				</div>
 				<div class="grid_50 text-center">
-					{{#if equals myconnection currentengineman}} 
+					{{#if equals myconnection currentengineman}}
 						<input type="range" class="direction" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
 					{{else}}
 						<input type="range" class="direction disabled" id="direction" value="{{direction}}" min="-1" max="1" step="1" disabled="disabled" />
@@ -147,11 +147,11 @@
 			<div clear=all></div>
 		</div>
 	</section>
-	
+
 </template>
 
 <template name="train_controls_old">
-	
+
 	<div class="grid_50">
 		<div class="bottom boxouter" style="position: relative; top: 70px;">
 			<div class="grid_50">
@@ -166,7 +166,7 @@
 				stop
 			</div>
 			<div class="grid_50">
-				{{#if equals myconnection currentengineman}} 
+				{{#if equals myconnection currentengineman}}
 					<input type="range" class="direction" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
 				{{else}}
 					<input type="range" class="direction disabled" id="direction" value="{{direction}}" min="-1" max="1" step="1" disabled="disabled" />
@@ -182,11 +182,11 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="grid_50">
 		<div>
 			<div class="grid_50">
-				{{#if equals myconnection currentengineman}} 
+				{{#if equals myconnection currentengineman}}
 					<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" />
 				{{else}}
 					<input type="range" class="targetspeed vertical disabled" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" disabled="disabled" />
@@ -197,7 +197,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 </template>
 
 <template name="train_speed_old">
@@ -216,16 +216,16 @@
 			<input type="button" value="leave
  driver's cab" class="button leave" name="leave" />
 			<br /><br />
-			<input type="button" value="hoop" class="button hoop" name="hoop" />
+			<input type="button" value="horn" class="button horn" name="horn" />
 		{{/if}}
-			
-			
+
+
 	{{ else }}
 			<input type="button" value="become
  engineer" class="button engineman" name="engineman" />
 	{{/if}}
 	</h3>
-	
+
 </template>
 
 
@@ -238,13 +238,13 @@
 		{{ else }}
 			{{_id}}
 		{{/if}}
-	
+
 		{{#if userId}}
 			(user: {{username}})
 		{{ else }}
 			(guest)
 		{{/if}}
-		- 
+		-
 		{{#if equals _id currentengineman}}
 			(<b>engineer</b>)
 		{{ else }}
@@ -257,7 +257,7 @@
 
 <template name="oldstuff">
 	old stuff
-	
+
   <!--
 	<div class="steering">
 		<div class="speed1"><div class="speedinner">speed 1</div></div>
@@ -269,18 +269,18 @@
 		<label for="targetspeed">targetspeed: </label><br />
 		<input type="number" id="targetspeed" name="targetspeed" value="{{getTargetspeed}}" min="-50" max="50" />
 		<br />
-		
+
 		<label for="currentspeed">current speed: </label><br />
 		<!- - <input type="number" id="currentspeed" name="currentspeed" value="{{getCurrentspeed}}" readonly>- ->
 		{{getCurrentspeed}}
-		
+
 		<label for="currentspeed">direction: </label><br />
 		<!- - <input type="number" id="currentspeed" name="currentspeed" value="{{getCurrentdirection}}" readonly>- ->
 		{{getCurrentdirection}}
-		
-			
+
+
 	<!- -
-	
+
 	<div class="container"></div>
     <div id="tachometer">
                   <div class="ii">
@@ -301,13 +301,13 @@
                       <div><b><span class="num_8">7</span></b></div>
                       <div><b></b></div>
                       <div><b><span class="num_9">8</span></b></div>
-                  </div> 
+                  </div>
                 <div id="redline"></div>
-                
-          <div class="line" style="animation: pendulum; 
+
+          <div class="line" style="animation: pendulum;
           animation-iteration-count: infinite; animation-duration: 4s;"></div>
-          
-         <div class="pin"><div class="inner"></div></div> 
+
+         <div class="pin"><div class="inner"></div></div>
     </div>
     -->
 </template>

@@ -36,9 +36,9 @@ Template.train_controls.onRendered( function() {
 	if(Meteor.connection._lastSessionId == null) {
 		var myconn = this.myconnection;
 		var timeout_train_controls;
-		
+
 		console.log('train_controls - myconnection is null in rendered: '+ Meteor.connection._lastSessionId + ' starting interval');
-		
+
 		timeout_train_controls = Meteor.setInterval(
 			function(){
 				console.log('train_controls - updating myconnection in interval: '+ Meteor.connection._lastSessionId);
@@ -57,9 +57,9 @@ Template.train_cab.onRendered( function() {
 	if(Meteor.connection._lastSessionId == null) {
 		var myconn = this.myconnection;
 		var timeout_train_cab;
-		
+
 		console.log('train_cab - myconnection is null in rendered: '+ Meteor.connection._lastSessionId + ' starting interval');
-		
+
 		timeout_train_cab = Meteor.setInterval(
 			function(){
 				console.log('train_cab - updating myconnection in interval: '+ Meteor.connection._lastSessionId);
@@ -79,7 +79,7 @@ Template.train_controls.helpers({
 		//console.log(this.direction);
 		return this.direction == 1 ? 'checked' : false;
 	},
-	
+
 	myconnection: function () {
 		return Template.instance().myconnection.get();
 		//return Meteor.connection._lastSessionId;
@@ -120,13 +120,13 @@ Template.train_controls.events({
 	"change input.targetspeed": function (event) {
 		// current value: $(event.currentTarget).val()
 		//console.log('setTargetspeed: '+ $(event.currentTarget).val() );
-		
+
 		Meteor.call("setTargetspeed", parseInt($(event.currentTarget).val()) );
 	},
 	"change input.direction": function (event) {
 		// current value: $(event.currentTarget).prop('checked')
 		//console.log('direction: '+ $(event.currentTarget).prop('checked'));
-		
+
 		//Meteor.call("setDirection", $(event.currentTarget).prop('checked') ? 1 : -1);
 		Meteor.call("setDirection", parseInt($(event.currentTarget).val()));
 	},
@@ -136,13 +136,13 @@ Template.train_cab.events({
 	"click input.engineman": function (event) {
 		// current value: $(event.currentTarget).prop('checked')
 		//console.log('direction: '+ $(event.currentTarget).prop('checked'));
-		
+
 		Meteor.call("setEngineman", Meteor.connection._lastSessionId, false );
 	},
 	"click input.leave": function (event) {
 		Meteor.call("setEngineman", Meteor.connection._lastSessionId, true );
 	},
-	"click input.hoop": function (event) {
+	"click input.horn": function (event) {
 		Meteor.call("playSound", '/home/pi/taurus_horn_gemischt_e.wav' );
 	},
 });
@@ -181,7 +181,3 @@ Template.connection.helpers({
 		}
 	}
 });
-
-
-
-
