@@ -1,9 +1,11 @@
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta charset="utf-8">
         <meta name="description" content="A toy train controlled by Meteor – as submitted to the Meteor Global Distributed Hackathon 2015.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="cleartype" content="on">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     </head>
     
     <body>
@@ -29,6 +31,7 @@
 			</nav>
 		</header>
 	</div>
+	
 
 	<div class="main-container">
 		<div class="main wrapper clearfix">
@@ -40,22 +43,11 @@
 					<p>&nbsp;</p>
 				</header>
 				-->
-				<section>
-					<div class="grid_100">
-						
-						<div class="grid_75">
-							{{>tachometer}}
-						</div>
-						
-						<div class="grid_25">
-							{{#each trains}}
-								{{> train_controls}}
-							{{/each}}
-						</div>
-					</div>
-						
-				</section>
-				<footer>
+				{{#each trains}}
+					{{> train_controls}}
+				{{/each}}
+				
+				<footer style="clear:both">
 					<h3>&nbsp;</h3>
 					<!--
 					<p>&nbsp;</p>
@@ -102,49 +94,20 @@
 		
 </template>
 
-
-
 <template name="train_controls">
-	
-	<!--{{#if equals myconnection currentengineman}}-->
-		<div class="grid_50">
-			<div class="bottom boxouter" style="position: relative; top: 70px;">
-				<div class="grid_50">
-					&nbsp;
-				</div>
-				<div class="grid_50 boxinner">
-					forward
-				</div>
+
+	<section>
+		<div class="grid_100" style="overflow:hidden; padding: 10px 0;">
+			<div class="grid_75">
+				{{> tachometer}}
 			</div>
-			<div class="boxouter">
-				<div class="grid_50 boxinner" style="position: relative; top: 108px;">
-					stop
-				</div>
+			
+			<div class="grid_25">
 				<div class="grid_50">
 					{{#if equals myconnection currentengineman}} 
-						<input type="range" class="direction vertical" orient="vertical" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
+						<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" />
 					{{else}}
-						<input type="range" class="direction vertical disabled" orient="vertical" id="direction" value="{{direction}}" min="-1" max="1" step="1" disabled="disabled" />
-					{{/if}}
-				</div>
-			</div>
-			<div class="top boxouter">
-				<div class="grid_50">
-					&nbsp;
-				</div>
-				<div class="grid_50 boxinner" style="text-align: center;">
-					rev
-				</div>
-			</div>
-		</div>
-		
-		<div class="grid_50">
-			<div>
-				<div class="grid_50">
-					{{#if equals myconnection currentengineman}} 
-						<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="5" />
-					{{else}}
-						<input type="range" class="targetspeed vertical disabled" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="5" disabled="disabled" />
+						<input type="range" class="targetspeed vertical disabled" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" disabled="disabled" />
 					{{/if}}
 				</div>
 				<div class="grid_50 rot_270" style="position: relative; top: 12px; left: 12px;">
@@ -152,35 +115,114 @@
 				</div>
 			</div>
 		</div>
-		
-	<!--{{else}}
-		
-	{{/if}}-->
+	</section>
+	<section>
+		<div class="grid_75" style="overflow:hidden; padding: 20px 0; clear:both">
+			<div class="bottom boxouter">
+				<div class="grid_25">
+					&nbsp;
+				</div>
+				<div class="grid_50 text-center">
+					{{#if equals myconnection currentengineman}} 
+						<input type="range" class="direction" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
+					{{else}}
+						<input type="range" class="direction disabled" id="direction" value="{{direction}}" min="-1" max="1" step="1" disabled="disabled" />
+					{{/if}}
+				</div>
+				<div class="grid_25">
+					&nbsp;
+				</div>
+			</div>
+			<div class="bottom boxouter">
+				<div class="grid_25 text-right">
+					forward
+				</div>
+				<div class="grid_50 text-center">
+					stop
+				</div>
+				<div class="grid_25 text-left">
+					rev
+				</div>
+			</div>
+			<div clear=all></div>
+		</div>
+	</section>
 	
 </template>
 
-<template name="train_speed">
+<template name="train_controls_old">
+	
+	<div class="grid_50">
+		<div class="bottom boxouter" style="position: relative; top: 70px;">
+			<div class="grid_50">
+				&nbsp;
+			</div>
+			<div class="grid_50 boxinner">
+				forward
+			</div>
+		</div>
+		<div class="boxouter">
+			<div class="grid_50 boxinner" style="position: relative; top: 108px;">
+				stop
+			</div>
+			<div class="grid_50">
+				{{#if equals myconnection currentengineman}} 
+					<input type="range" class="direction" id="direction" value="{{direction}}" min="-1" max="1" step="1" />
+				{{else}}
+					<input type="range" class="direction disabled" id="direction" value="{{direction}}" min="-1" max="1" step="1" disabled="disabled" />
+				{{/if}}
+			</div>
+		</div>
+		<div class="top boxouter">
+			<div class="grid_50">
+				&nbsp;
+			</div>
+			<div class="grid_50 boxinner" style="text-align: center;">
+				rev
+			</div>
+		</div>
+	</div>
+	
+	<div class="grid_50">
+		<div>
+			<div class="grid_50">
+				{{#if equals myconnection currentengineman}} 
+					<input type="range" class="targetspeed vertical" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" />
+				{{else}}
+					<input type="range" class="targetspeed vertical disabled" orient="vertical" id="targetspeed" value="{{targetspeed}}" min="0" max="100" step="2" disabled="disabled" />
+				{{/if}}
+			</div>
+			<div class="grid_50 rot_270" style="position: relative; top: 12px; left: 12px;">
+				speed
+			</div>
+		</div>
+	</div>
+	
+</template>
+
+<template name="train_speed_old">
 
 	<label for="currentspeed">current speed: </label>
 	{{currentspeed}}
 	<label for="currentdirection">direction: </label>
-	{{currentdirection}}<br >
+	{{currentdirection}}<br />
 </template>
 
 
 <template name="train_cab">
-
 	<h3>
 	{{#if currentengineman}}
 		{{#if equals myconnection currentengineman}}
-			<input type="button" value="leave 
-driver's cab" class="button leave" name="leave" />
+			<input type="button" value="leave
+ driver's cab" class="button leave" name="leave" />
+			<br /><br />
+			<input type="button" value="hoop" class="button hoop" name="hoop" />
 		{{/if}}
 			
 			
 	{{ else }}
 			<input type="button" value="become
-engineer" class="button engineman" name="engineman" />
+ engineer" class="button engineman" name="engineman" />
 	{{/if}}
 	</h3>
 	

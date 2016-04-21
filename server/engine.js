@@ -1,9 +1,9 @@
 var speedInterval = 50;
-var acceleration = .4;
+var acceleration = 0.8;
 var speedRange = 256;
 
 var speedOffset = 150;
-var speedFactor = 0.4;
+var speedFactor = 0.3;
 var startingPulse = 40;
 var startingPulseDecrement = 10;
 
@@ -16,6 +16,7 @@ var frontRedPin = 7;
 var rearWhitePin = 5;
 var rearRedPin = 4;
 
+var spawn = null;
 
 Meteor.startup(function() {
 
@@ -34,7 +35,13 @@ Meteor.startup(function() {
 		wpi = null;
 	}
 
-	Train.update({}, {$set: {wpi: wpi ? "available" : "not-available", targetspeed: 0, direction: 1, currentspeed: 0, currentdirection: 1, currentengineman: ''}}, {upsert: true});
+	try {
+		spawn = Meteor.npmRequire('child_process').spawn;
+	} catch(e) {
+		spawn = null;
+	}
+
+	Train.update({}, {$set: {wpi: wpi ? "available" : "not-available", targetspeed: 0, direction: 1, currentspeed: 0, currentdirection: 1, currentengineman: '', brake: 0}}, {upsert: true});
 
 	if (wpi) {
 
@@ -67,6 +74,7 @@ Meteor.startup(function() {
 	}
 
 	var starting = startingPulse;
+	var idleStepper = 0;
 
 	// Initialize interval for speed updates
 
@@ -118,13 +126,62 @@ Meteor.startup(function() {
 
 			var engineman = (train.currentengineman != "");
 
-			wpi.digitalWrite(frontWhitePin, oneIf(engineman && train.direction > 0));
-			wpi.digitalWrite(frontRedPin, oneIf(engineman && train.direction <= 0));
-			wpi.digitalWrite(rearWhitePin, oneIf(engineman && train.direction < 0));
-			wpi.digitalWrite(rearRedPin, oneIf(engineman && train.direction >= 0));
+			if (engineman) {
+				stepper = 0;
+				wpi.digitalWrite(frontWhitePin, oneIf(train.direction > 0));
+				wpi.digitalWrite(frontRedPin, oneIf(train.direction <= 0));
+				wpi.digitalWrite(rearWhitePin, oneIf(train.direction < 0));
+				wpi.digitalWrite(rearRedPin, oneIf(train.direction >= 0));
+			} else {
+				idleStepper++;
+				if (idleStepper >= 200) idleStepper = 0;
+
+				wpi.digitalWrite(frontWhitePin, oneIf(idleStepper < 10));
+				wpi.digitalWrite(frontRedPin, oneIf(idleStepper >= 100 && idleStepper < 110));
+				wpi.digitalWrite(rearWhitePin, oneIf(idleStepper >= 50 && idleStepper < 60));
+				wpi.digitalWrite(rearRedPin, oneIf(idleStepper >= 150 && idleStepper < 160));
+			}
+
 		}
 
 	}, speedInterval);
 
 });
 
+Meteor.methods({
+	playSound: function(sound) {
+
+		if (spawn) {
+			spawn('aplay', [ '-D', 'sysdefault:CARD=Set', "/home/pi/taurus_horn_gemischt_e.wav" ]);
+		}
+
+		/*
+		//var Sound = require('node-aplay');
+		var Sound = Meteor.npmRequire("node-aplay");
+
+		// fire and forget:
+		new Sound('/home/pi/taurus_horn_gemischt_e.wav').play();
+		*/
+
+		/*
+		// with ability to pause/resume:
+		var music = new Sound('/home/pi/taurus_horn_gemischt_e.wav');
+		music.play();
+
+		setTimeout(function () {
+			music.pause(); // pause the music after five seconds
+		}, 5000);
+
+		setTimeout(function () {
+			music.resume(); // and resume it two seconds after pausing
+		}, 7000);
+		*/
+
+		/*
+		// you can also listen for various callbacks:
+		music.on('complete' function () {
+			console.log('Done with playback!');
+		});
+		*/
+	}
+});

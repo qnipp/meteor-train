@@ -102,7 +102,7 @@ Template.train_cab.helpers({
 					return train.currentengineman;
 				} else {
 					Train.update({ currentengineman: train.currentengineman }, { $set: {currentengineman: "", targetspeed: 0}}, null, function(error, rowsaffected) {
-						console.log('unsetEngineman update message: '+ error + " - "+ rowsaffected);
+						console.log('unsetEngineman update message: '+ (rowsaffected ? ' ok ' : ' failed: '+ error));
 					});
 				}
 			}
@@ -141,6 +141,9 @@ Template.train_cab.events({
 	},
 	"click input.leave": function (event) {
 		Meteor.call("setEngineman", Meteor.connection._lastSessionId, true );
+	},
+	"click input.hoop": function (event) {
+		Meteor.call("playSound", '/home/pi/taurus_horn_gemischt_e.wav' );
 	},
 });
 
